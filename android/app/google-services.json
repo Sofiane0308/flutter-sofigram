@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "879252716568",
+    "firebase_url": "https://flutter-sofigram.firebaseio.com",
+    "project_id": "flutter-sofigram",
+    "storage_bucket": "flutter-sofigram.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:879252716568:android:2906f01c2cc0b50b33d76d",
+        "android_client_info": {
+          "package_name": "com.example.sofigram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "879252716568-agk1o5g8rre6uj8o53pb09j11p32h9j8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCld_enx-TchrkStNSmMEbtYnDmfChy3Es"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "879252716568-agk1o5g8rre6uj8o53pb09j11p32h9j8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
