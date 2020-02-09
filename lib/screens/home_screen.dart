@@ -7,7 +7,10 @@ import 'package:sofigram/screens/profile_screen.dart';
 import 'package:sofigram/screens/search_screen.dart';
 
 class HomeSreen extends StatefulWidget {
-  HomeSreen({Key key}) : super(key: key);
+
+    final String userId;
+
+  HomeSreen({this.userId});
 
   @override
   _HomeSreenState createState() => _HomeSreenState();
@@ -57,7 +60,7 @@ class _HomeSreenState extends State<HomeSreen> {
           SearchScreen(),
           CreatePostScreen(),
           ActivityScreen(),
-          ProfileScreen()
+          ProfileScreen(userId: widget.userId,)
         ],
         onPageChanged: (int index){
           setState(() {
