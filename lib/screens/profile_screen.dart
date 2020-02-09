@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sofigram/models/user_model.dart';
 import 'package:sofigram/utilities/constants.dart';
@@ -37,6 +38,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       CircleAvatar(
                         radius: 50,
                         backgroundColor: Colors.grey,
+                        backgroundImage: user.proflieImageUrl.isEmpty
+                            ? AssetImage('assets/images/user_placeholder.png')
+                            : CachedNetworkImageProvider(user.proflieImageUrl),
                       ),
                       Expanded(
                         child: Column(children: <Widget>[
@@ -85,7 +89,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: FlatButton(
                                 color: Colors.blue,
                                 textColor: Colors.white,
-                                onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (_) => EditProfileScreen(user:user))),
+                                onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) =>
+                                            EditProfileScreen(user: user))),
                                 child: Text('Edit Profile',
                                     style: TextStyle(fontSize: 18.0))),
                           )
