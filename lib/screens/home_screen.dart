@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sofigram/models/user_data.dart';
 import 'package:sofigram/screens/activity_screen.dart';
 import 'package:sofigram/screens/create_post_screen.dart';
 import 'package:sofigram/screens/feed_screen.dart';
@@ -7,10 +9,6 @@ import 'package:sofigram/screens/profile_screen.dart';
 import 'package:sofigram/screens/search_screen.dart';
 
 class HomeSreen extends StatefulWidget {
-
-    final String userId;
-
-  HomeSreen({this.userId});
 
   @override
   _HomeSreenState createState() => _HomeSreenState();
@@ -28,6 +26,7 @@ class _HomeSreenState extends State<HomeSreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(Provider.of<UserData>(context).currentUserId); 
     return Scaffold(
        
       bottomNavigationBar: CupertinoTabBar(
@@ -53,7 +52,7 @@ class _HomeSreenState extends State<HomeSreen> {
           SearchScreen(),
           CreatePostScreen(),
           ActivityScreen(),
-          ProfileScreen(userId: widget.userId,)
+          ProfileScreen(userId: Provider.of<UserData>(context).currentUserId)
         ],
         onPageChanged: (int index){
           setState(() {

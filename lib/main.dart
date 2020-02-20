@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sofigram/models/user_data.dart';
 import 'package:sofigram/screens/feed_screen.dart';
 import 'package:sofigram/screens/home_screen.dart';
 import 'package:sofigram/screens/login_screen.dart';
@@ -12,31 +14,35 @@ class MyApp extends StatelessWidget {
     return StreamBuilder<FirebaseUser>(
       stream: FirebaseAuth.instance.onAuthStateChanged,
       builder: (BuildContext context, snapshot) {
-        if (snapshot.hasData)
-          {return HomeSreen(userId: snapshot.data.uid,);}
-        else
-          {return LoginScreen();}
+        if (snapshot.hasData) {
+          Provider.of<UserData>(context).currentUserId = snapshot.data.uid;
+          return HomeSreen();
+        } else {
+          return LoginScreen();
+        }
       },
     );
-  } 
+  }
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Sofigram',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryIconTheme: Theme.of(context).primaryIconTheme.copyWith(
-          color: Colors.black
-        )
+    return ChangeNotifierProvider(
+      builder: (context) => UserData(),
+      child: MaterialApp(
+        title: 'Sofigram',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+            primaryIconTheme: Theme.of(context)
+                .primaryIconTheme
+                .copyWith(color: Colors.black)),
+        home: _getScreenId(),
+        routes: {
+          LoginScreen.id: (context) => LoginScreen(),
+          SignupScreen.id: (context) => SignupScreen(),
+          FeedScreen.id: (context) => FeedScreen(),
+        },
       ),
-      home: _getScreenId(),
-      routes: {
-        LoginScreen.id: (context) => LoginScreen(),
-        SignupScreen.id: (context) => SignupScreen(),
-        FeedScreen.id: (context) => FeedScreen(),
-      },
     );
   }
 }
