@@ -26,9 +26,8 @@ class _HomeSreenState extends State<HomeSreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(Provider.of<UserData>(context).currentUserId); 
+    final String currentUserId = Provider.of<UserData>(context).currentUserId;
     return Scaffold(
-       
       bottomNavigationBar: CupertinoTabBar(
           currentIndex: _currentTab,
           activeColor: Colors.black,
@@ -52,7 +51,7 @@ class _HomeSreenState extends State<HomeSreen> {
           SearchScreen(),
           CreatePostScreen(),
           ActivityScreen(),
-          ProfileScreen(userId: Provider.of<UserData>(context).currentUserId)
+          ProfileScreen(currentUserId:currentUserId , userId: currentUserId)
         ],
         onPageChanged: (int index){
           setState(() {

@@ -1,20 +1,67 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sofigram/models/user_data.dart';
 import 'package:sofigram/models/user_model.dart';
+import 'package:sofigram/services/database_service.dart';
 import 'package:sofigram/utilities/constants.dart';
 
 import 'edit_profile_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String userId;
+  final String currentUserId;
 
-  ProfileScreen({this.userId});
+  ProfileScreen({this.userId, this.currentUserId});
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  bool isFollowing = false;
+  int followerCount = 0;
+  int followingCount = 0;
+
+  _displayButton(User user) {
+    return user.id == Provider.of<UserData>(context).currentUserId
+        ? Container(
+            width: 200,
+            child: FlatButton(
+                color: Colors.blue,
+                textColor: Colors.white,
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => EditProfileScreen(user: user))),
+                child: Text('Edit Profile', style: TextStyle(fontSize: 18.0))),
+          )
+        : Container(
+            width: 200,
+            child: FlatButton(
+                color: isFollowing ? Colors.grey[200] : Colors.blue,
+                textColor: isFollowing ? Colors.black : Colors.white,
+                onPressed: () => {},
+                child: Text(isFollowing ? 'Unfollow' : 'Follow',
+                    style: TextStyle(fontSize: 18.0))),
+          );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setupIsFollowing();
+  }
+
+  setupIsFollowing() async {
+    bool isFollowingUser = await DatabaseService.isFollowingUser(
+        currentUserId: widget.currentUserId,
+        userId: widget.userId);
+      setState(() {
+        isFollowing = isFollowingUser;
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,19 +139,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ],
                                 ),
                               ]),
-                          Container(
-                            width: 200,
-                            child: FlatButton(
-                                color: Colors.blue,
-                                textColor: Colors.white,
-                                onPressed: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) =>
-                                            EditProfileScreen(user: user))),
-                                child: Text('Edit Profile',
-                                    style: TextStyle(fontSize: 18.0))),
-                          )
+                          _displayButton(user)
                         ]),
                       )
                     ],

@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sofigram/models/user_data.dart';
 import 'package:sofigram/models/user_model.dart';
 import 'package:sofigram/screens/profile_screen.dart';
 import 'package:sofigram/services/database_service.dart';
@@ -24,13 +26,18 @@ class _SearchScreenState extends State<SearchScreen> {
               ? AssetImage('assets/images/user_placeholder.png')
               : CachedNetworkImageProvider(user.proflieImageUrl)),
       title: Text(user.name),
-      onTap: () => Navigator.push(context,
-          MaterialPageRoute(builder: (_) => ProfileScreen(userId: user.id))),
+      onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (_) => ProfileScreen(
+                  currentUserId: Provider.of<UserData>(context).currentUserId,
+                  userId: user.id))),
     );
   }
 
   _clearSearch() {
-    WidgetsBinding.instance.addPostFrameCallback((_) => _searchController.clear());
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => _searchController.clear());
     setState(() {
       _users = null;
     });
@@ -53,10 +60,11 @@ class _SearchScreenState extends State<SearchScreen> {
                       icon: Icon(Icons.clear), onPressed: _clearSearch)),
               onSubmitted: (input) {
                 print(input);
-                if(input.isNotEmpty)
-                {setState(() {
-                  _users = DatabaseService.searchUsers(input);
-                });}
+                if (input.isNotEmpty) {
+                  setState(() {
+                    _users = DatabaseService.searchUsers(input);
+                  });
+                }
               },
             )),
         body: _users == null
