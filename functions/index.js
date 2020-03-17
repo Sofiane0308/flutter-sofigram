@@ -20,7 +20,7 @@ exports.onFollowUser = functions.firestore.document('followers/{userId}/userFoll
 exports.onUnfollowUer = functions.firestore.document('/followers/{userId}/userFollowers/{followerId}').onDelete(async (snapshot, context) => {
     const userId = context.params.userId;
     const followerId = context.params.followerId;
-    const userFeedRef = admin.firestore().collection('feeds').doc(followerId).collection('userFeed').where('authorId', '= =', userId);
+    const userFeedRef = admin.firestore().collection('feeds').doc(followerId).collection('userFeed').where('authorId', '==', userId);
     const userPostsSnapshot = await userFeedRef.get();
     userPostsSnapshot.forEach(doc => {
         if(doc.exists){
