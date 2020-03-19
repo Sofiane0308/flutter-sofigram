@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sofigram/models/post_model.dart';
 import 'package:sofigram/models/user_data.dart';
 import 'package:sofigram/models/user_model.dart';
+import 'package:sofigram/services/auth_service.dart';
 import 'package:sofigram/services/database_service.dart';
 import 'package:sofigram/utilities/constants.dart';
 import 'package:sofigram/widgets/post_view.dart';
@@ -286,7 +287,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             'Sofigram',
             style: TextStyle(
                 color: Colors.black, fontFamily: 'Billabong', fontSize: 35),
-          )),
+          ),
+          actions: <Widget>[IconButton(icon: Icon(Icons.exit_to_app), onPressed: AuthService.logOut)],
+          ),
       backgroundColor: Colors.white,
       body: FutureBuilder(
           future: usersRef.document(widget.userId).get(),

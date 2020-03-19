@@ -30,10 +30,8 @@ class AuthService {
   }
 
   static void logOut(
-    BuildContext context,
   ) {
     _auth.signOut();
-    Navigator.pushReplacementNamed(context, LoginScreen.id);
   }
 
   static void logIn(BuildContext context, String email, String password) async {

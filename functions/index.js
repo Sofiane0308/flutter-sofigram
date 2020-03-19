@@ -6,7 +6,7 @@ exports.onFollowUser = functions.firestore.document('followers/{userId}/userFoll
     console.log(snapshot.data());
     const userId = context.params.userId;
     const followerId = context.params.followerId;
-    const followedUserPostsRef = admin.firestore().collection('posts').doc(userId).collection('usersPosts');
+    const followedUserPostsRef = admin.firestore().collection('posts').doc(userId).collection('userPosts');
     const userFeedRef = admin.firestore().collection('feeds').doc(followerId).collection('userFeed');
     const followedUserPostsSnapshot = await followedUserPostsRef.get();
     followedUserPostsSnapshot.forEach(doc => {
@@ -29,7 +29,7 @@ exports.onUnfollowUer = functions.firestore.document('/followers/{userId}/userFo
     });
 });
 
-exports.onUploadPost = functions.firestore.document('posts/{userId}/usersPosts/{postId}').onCreate(async (snapshot, context) => {
+exports.onUploadPost = functions.firestore.document('posts/{userId}/userPosts/{postId}').onCreate(async (snapshot, context) => {
     console.log(snapshot.data());
     const userId = context.params.userId;
     const postId = context.params.postId;
@@ -38,3 +38,31 @@ exports.onUploadPost = functions.firestore.document('posts/{userId}/usersPosts/{
     userFollowersSnapshot.forEach(doc => {
         admin.firestore().collection('feeds').doc(doc.id).collection('userFeed').doc(postId).set(snapshot.data());  }); 
 });
+
+exports.onUpdatePost = functions.firestore
+    .document('posts/{userId}/userPosts/{postId}')
+    .onUpdate(async (snapshot, context) => {
+        const userId = context.params.userId;
+        const postId = context.params.postId;
+        const newPostData = snapshot.after.data();
+        console.log(newPostData);
+        const userFollowersRef = admin
+            .firestore()
+            .collection('followers')
+            .doc(userId)
+            .collection('userFollowers');
+        const userFollowersSnapshot = await userFollowersRef.get();
+        userFollowersSnapshot.forEach(async userDoc => {
+            const postRef = admin
+                .firestore()
+                .collection('feeds')
+                .doc(userDoc.id)
+                .collection('userFeed');
+            const postDoc = await postRef.doc(postId).get();
+            if(postDoc.exists){
+                postDoc.ref.update(newPostData);
+            }
+
+        });
+
+    });

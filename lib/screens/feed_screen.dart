@@ -67,7 +67,7 @@ class _FeedScreenState extends State<FeedScreen> {
             : Center(
                 child: FlatButton(
                     onPressed: () {
-                      AuthService.logOut(context);
+                      AuthService.logOut();
                     },
                     child: Text('data'))));
   }
