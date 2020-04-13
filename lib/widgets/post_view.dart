@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sofigram/models/post_model.dart';
 import 'package:sofigram/models/user_model.dart';
+import 'package:sofigram/screens/comment_screen.dart';
 import 'package:sofigram/screens/profile_screen.dart';
 import 'package:sofigram/services/database_service.dart';
 
@@ -150,7 +151,15 @@ class _PostViewState extends State<PostView> {
               IconButton(
                 icon: Icon(Icons.comment),
                 iconSize: 30.0,
-                onPressed: () {},
+                onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => CommentsScreen(
+                          post: widget.post,
+                          likeCount: _likeCount,
+                        ),
+                      ),
+                    ),
               )
             ],
           ),

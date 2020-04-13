@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sofigram/models/post_model.dart';
 import 'package:sofigram/models/user_data.dart';
 import 'package:sofigram/models/user_model.dart';
+import 'package:sofigram/screens/comment_screen.dart';
 import 'package:sofigram/services/auth_service.dart';
 import 'package:sofigram/services/database_service.dart';
 import 'package:sofigram/utilities/constants.dart';
@@ -241,9 +242,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   _buildTilePost(Post post) {
     return GridTile(
-      child: Image(
-        image: CachedNetworkImageProvider(post.imageUrl),
-        fit: BoxFit.cover,
+      child: GestureDetector(
+        onTap: ()=> Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => CommentsScreen(
+              post: post,
+              likeCount: post.likeCount,
+            ),
+          ),
+        ),
+              child: Image(
+          image: CachedNetworkImageProvider(post.imageUrl),
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }
